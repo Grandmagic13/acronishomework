@@ -21,6 +21,14 @@ def generate_dict_out_of(command_result):
 
 
 class WindowsRemoteHandler(RemoteHandlerBase):
+    # private methods
+    def _get_windefender_params(self, command, print_readable=False):
+        result = self.execute_in_commandline(command)
+        if print_readable:
+            print_stdout(result)
+        return generate_dict_out_of(result)
+
+    # public methods
     def __init__(self, username, password, host, domain=None):
         super().__init__(host)
         self.domain = domain
@@ -42,17 +50,11 @@ class WindowsRemoteHandler(RemoteHandlerBase):
 
     # returns dict of antimalware status key-value pairs and optionally prints command's console output
     def get_windefender_antimalware_status(self, print_readable=False):
-        result = self.execute_in_commandline("Get-MpComputerStatus")
-        if print_readable:
-            print_stdout(result)
-        return generate_dict_out_of(result)
+        return self._get_windefender_params("Get-MpComputerStatus", print_readable)
 
     # returns dict of windows defender preferences key-value pairs and optionally prints command's console output
-    def get_windefender_params(self, print_readable=False):
-        result = self.execute_in_commandline("Get-MpPreference")
-        if print_readable:
-            print_stdout(result)
-        return generate_dict_out_of(result)
+    def get_windefender_preferences(self, print_readable=False):
+        return self._get_windefender_params("Get-MpPreference", print_readable)
 
     # not sure about what this one has to do exactly yet, assuming it has to return a list of registry keys
     def get_registry_keys(self):
