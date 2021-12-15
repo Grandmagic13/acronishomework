@@ -57,5 +57,6 @@ class WindowsRemoteHandler(RemoteHandlerBase):
         return self._get_command_results_key_values("Get-MpPreference", print_readable)
 
     # not sure about what this one has to do exactly yet, assuming it has to return a list of registry keys
-    def get_registry_keys(self):
-        raise NotImplementedError()
+    def get_registry_values_for(self, registry_path, print_readable=False):
+        query = "Get-ItemProperty -Path Registry::{}".format(registry_path)
+        return self._get_command_results_key_values(query, print_readable) # rename private function
