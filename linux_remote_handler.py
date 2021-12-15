@@ -29,3 +29,7 @@ class LinuxRemoteHandler(RemoteHandlerBase):
     def restart(self):
         stdin, stdout, stderr = self.client.exec_command("echo {} | sudo -S reboot -f".format(self.password))
         return {"stdin": stdin, "stdout": stdout, "stderr": stderr}
+
+    def power_off(self):
+        stdin, stdout, stderr = self.client.exec_command("echo {} | sudo -S shutdown -P -f now".format(self.password))
+        return {"stdin": stdin, "stdout": stdout, "stderr": stderr}
