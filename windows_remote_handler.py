@@ -56,7 +56,8 @@ class WindowsRemoteHandler(RemoteHandlerBase):
     def get_windefender_preferences(self, print_readable=False):
         return self._get_command_results_key_values("Get-MpPreference", print_readable)
 
-    # not sure about what this one has to do exactly yet, assuming it has to return a list of registry keys
+    # usage example:
+    # get_registry_values_for("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Notepad\\DefaultFonts")
     def get_registry_values_for(self, registry_path, print_readable=False):
         query = "Get-ItemProperty -Path Registry::{}".format(registry_path)
         return self._get_command_results_key_values(query, print_readable) # rename private function
