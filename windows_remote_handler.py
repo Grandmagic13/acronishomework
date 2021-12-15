@@ -1,9 +1,18 @@
 from remote_handler_base import RemoteHandlerBase
+import winrm
 
 
 class WindowsRemoteHandler(RemoteHandlerBase):
-    def __init__(self, ip_address):
-        super().__init__(ip_address)
+    def __init__(self, username, password, host, domain=None):
+        super().__init__(host)
+        self.domain = domain
+        self.username = username
+        self.password = password
+        user_creds = '{0}@{1}'.format(self.username, self.domain) if domain else username
+        self.session = winrm.Session(self.ip_address, auth=(user_creds, self.password), transport='ntlm')
+
+    def execute_in_commandline(self, command):
+        return self.session.run_ps(command)
 
     def get_windefender_params(self):
         raise NotImplementedError()
