@@ -14,6 +14,12 @@ class WindowsRemoteHandler(RemoteHandlerBase):
     def execute_in_commandline(self, command):
         return self.session.run_ps(command)
 
+    def restart(self):
+        return self.execute_in_commandline("shutdown /r /t 0")
+
+    def power_off(self):
+        return self.execute_in_commandline("shutdown /p")
+
     def get_windefender_params(self):
         raise NotImplementedError()
 
